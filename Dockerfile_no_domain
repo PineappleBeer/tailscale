@@ -27,10 +27,11 @@ ENV DERP_VERIFY_CLIENTS false
 # ==========================
 
 # apt
-RUN apt-get update && \
-    apt-get install -y openssl curl
+RUN sed -i '$a\deb http://th.archive.ubuntu.com/ubuntu jammy main' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y openssl curl libc6
 
-COPY build_cert.sh /app/
+COPY generate_cert.sh /app/
 COPY --from=builder /app/derper /app/derper
 
 # build self-signed certs && start derper
